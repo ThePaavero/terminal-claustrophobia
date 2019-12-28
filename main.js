@@ -38,6 +38,7 @@ process.stdin.on('keypress', (ch, key) => {
   }
 
   const player = getPlayer()
+
   switch (key.name) {
     // Movement.
     case 'w':
@@ -67,6 +68,7 @@ process.stdin.on('keypress', (ch, key) => {
       shoot(player, 'right')
       break
   }
+
   keepActorWithinArea(player)
 })
 
@@ -81,17 +83,18 @@ const clearTerminal = () => {
 }
 
 const shoot = (shooter, direction) => {
-  state.actors.push(
-    {
-      id: 'Bullet',
-      character: '·'.yellow,
-      position: {
-        row: shooter.position.row,
-        column: shooter.position.column,
-      },
-      direction,
-    }
-  )
+  const bullet = {
+    id: 'Bullet',
+    character: '·'.yellow,
+    position: {
+      row: shooter.position.row,
+      column: shooter.position.column,
+    },
+    direction,
+  }
+  state.actors.push(bullet)
+
+  keepActorWithinArea(bullet)
 }
 
 const getPlayer = () => {
@@ -191,6 +194,15 @@ const updateBullets = () => {
       case 'right':
         bullet.position.column++
         break
+    }
+
+    // Kill if out of area.
+    if (bullet.position.column < 0 || bullet.position.column > state.columns) {
+      state.actors.forEach(actor => {
+        if (actor.position.row === bullet.position.row && actor.position.column === bullet.position.column) {
+          state.actors = state.actors.filter(a => a !== bullet)
+        }
+      })
     }
   })
 }
