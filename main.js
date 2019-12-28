@@ -197,7 +197,7 @@ const updateBullets = () => {
     }
 
     // Kill if out of area.
-    if (bullet.position.column < 0 || bullet.position.column > state.columns) {
+    if (bullet.position.column < 0 || bullet.position.column > state.columns || bullet.position.row < 0 || bullet.position.row > state.rows) {
       state.actors.forEach(actor => {
         if (actor.position.row === bullet.position.row && actor.position.column === bullet.position.column) {
           state.actors = state.actors.filter(a => a !== bullet)
