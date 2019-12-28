@@ -1,7 +1,7 @@
 const clear = require('clear')
-const fs = require('fs')
+const _ = require('lodash')
 keypress = require('keypress')
-require ('colors')
+require('colors')
 
 const state = {
   columns: 80,
@@ -9,7 +9,7 @@ const state = {
   actors: [
     {
       id: 'Player',
-      character: ' '.bgRed.black,
+      character: ' '.bgWhite,
       position: {
         row: 10,
         column: 10,
@@ -107,15 +107,44 @@ const render = () => {
   console.log(output)
 }
 
+const updateEnemies = () => {
+  const enemies = state.actors.filter(a => a.id === 'Enemy')
+  const player = getPlayer()
+  enemies.forEach(enemy => {
+    enemy.position.row += enemy.position.row > player.position.row ? -1 : 1
+    enemy.position.column += enemy.position.column > player.position.column ? -1 : 1
+  })
+}
+
+const spawnEnemies = () => {
+  state.actors.push(
+    {
+      id: 'Enemy',
+      character: ' '.bgRed,
+      position: {
+        row: state.rows,
+        column: _.random(0, state.columns),
+      },
+    }
+  )
+  setTimeout(spawnEnemies, _.random(1000, 10000))
+}
+
 const updateState = () => {
   keepPlayerWithinArea()
+  updateEnemies()
 }
 
 const step = () => {
   updateState()
   render()
-  setTimeout(step, 0)
+  setTimeout(step, 60)
 }
 
-clearTerminal()
-step()
+const init = () => {
+  clearTerminal()
+  spawnEnemies()
+  step()
+}
+
+init()
