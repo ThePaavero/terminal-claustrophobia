@@ -10,6 +10,7 @@ const state = {
     {
       id: 'Player',
       character: ' '.bgWhite,
+      health: 5,
       position: {
         row: 10,
         column: 10,
@@ -218,6 +219,29 @@ const checkForBulletHits = () => {
   })
 }
 
+const gameOver = () => {
+  // @todo
+  logAndExit('GAME OVER')
+}
+
+const updateHealthWith = (add) => {
+  const player = getPlayer()
+  player.health += add
+  if (player.health < 1) {
+    gameOver()
+  }
+}
+
+const checkForEnemyHit = () => {
+  const enemies = state.actors.filter(a => a.id === 'Enemy')
+  const player = getPlayer()
+  enemies.forEach(enemy => {
+    if (enemy.position.row === player.position.row && enemy.position.column === player.position.column) {
+      updateHealthWith(-1)
+    }
+  })
+}
+
 const spawnEnemies = () => {
   state.actors.push(
     {
@@ -237,6 +261,7 @@ const updateState = () => {
   updateEnemies()
   updateBullets()
   checkForBulletHits()
+  checkForEnemyHit()
 }
 
 const step = () => {
