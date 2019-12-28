@@ -61,7 +61,7 @@ process.stdin.on('keypress', (ch, key) => {
       shoot('left')
       break
     case 'l':
-      shoot('rightup')
+      shoot('right')
       break
   }
   keepPlayerWithinArea()
@@ -152,7 +152,7 @@ const updateEnemies = () => {
   const player = getPlayer()
   enemies.forEach(enemy => {
     // Slow these annoying fucks down a bit.
-    if (_.random(0, 1) === 0) {
+    if (_.random(0, 5) > 0) {
       return
     }
     enemy.position.row += (enemy.position.row > player.position.row ? -1 : 1) + _.random(-1, 1)
@@ -163,7 +163,20 @@ const updateEnemies = () => {
 const updateBullets = () => {
   const bullets = state.actors.filter(a => a.id === 'Bullet')
   bullets.forEach(bullet => {
-    bullet.position.column--
+    switch (bullet.direction) {
+      case 'up':
+        bullet.position.row--
+        break
+      case 'down':
+        bullet.position.row++
+        break
+      case 'left':
+        bullet.position.column--
+        break
+      case 'right':
+        bullet.position.column++
+        break
+    }
   })
 }
 
