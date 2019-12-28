@@ -81,6 +81,15 @@ const keepPlayerWithinArea = () => {
 }
 
 const getBlockOutput = (row, column) => {
+
+  // Should we be a "wall" block?
+  if (row === 0 || row === state.rows - 1) {
+    return '-'
+  }
+  if (column === 1 || column === state.columns) {
+    return '|'
+  }
+
   let matchingActor = null
   state.actors.forEach(actor => {
     if (actor.position.row === row && actor.position.column === column) {
@@ -115,8 +124,8 @@ const updateEnemies = () => {
     if (_.random(0, 1) === 0) {
       return
     }
-    enemy.position.row += (enemy.position.row > player.position.row ? -1 : 1) + _.random(-2, 2)
-    enemy.position.column += (enemy.position.column > player.position.column ? -1 : 1) + _.random(-2, 2)
+    enemy.position.row += (enemy.position.row > player.position.row ? -1 : 1) + _.random(-1, 1)
+    enemy.position.column += (enemy.position.column > player.position.column ? -1 : 1) + _.random(-1, 1)
   })
 }
 
