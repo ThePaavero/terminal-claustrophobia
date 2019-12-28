@@ -183,13 +183,17 @@ const bulletOverlapsEnemyOrPlayer = (bullet) => {
   state.actors.forEach(actor => {
     const actorType = actor.id
     if (actorType === 'Player' || actorType === 'Bullet') {
-      return
+      return null
     }
     if (bullet.position.row === actor.position.row && bullet.position.column === actor.position.column) {
       // Ouch!
-      logAndExit(actorType)
+      return {
+        bullet,
+        actor,
+      }
     }
   })
+  return false
 }
 
 const checkForBulletHits = () => {
@@ -199,7 +203,9 @@ const checkForBulletHits = () => {
     if (!hitResult) {
       return
     }
-    // @todo Handle hit result.
+    // HIT!
+    logAndExit(hitResult)
+    // @todo Kill the enemy.
   })
 }
 
