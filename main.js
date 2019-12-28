@@ -111,8 +111,12 @@ const updateEnemies = () => {
   const enemies = state.actors.filter(a => a.id === 'Enemy')
   const player = getPlayer()
   enemies.forEach(enemy => {
-    enemy.position.row += enemy.position.row > player.position.row ? -1 : 1
-    enemy.position.column += enemy.position.column > player.position.column ? -1 : 1
+    // Slow these annoying fucks down a bit.
+    if (_.random(0, 1) === 0) {
+      return
+    }
+    enemy.position.row += (enemy.position.row > player.position.row ? -1 : 1) + _.random(-2, 2)
+    enemy.position.column += (enemy.position.column > player.position.column ? -1 : 1) + _.random(-2, 2)
   })
 }
 
