@@ -22,6 +22,7 @@ const state = {
     }
   ],
   enemiesToKill: [],
+  delayRangeForNextEnemySpawn: [800, 1500]
 }
 
 keypress(process.stdin)
@@ -166,7 +167,7 @@ const updateEnemies = () => {
   const player = getPlayer()
   enemies.forEach(enemy => {
     // Slow these annoying fucks down a bit.
-    if (_.random(0, 5) > 0) {
+    if (_.random(0, 2) > 0) {
       return
     }
     enemy.position.row += (enemy.position.row > player.position.row ? -1 : 1) + _.random(-1, 1)
@@ -240,7 +241,11 @@ const checkForBulletHits = () => {
     state.enemiesToKill.push(enemyToKill)
     // Reward player.
     addToPoints(1)
+    // Shrink the area to make things a bit more hectic.
     makeAreaSmallerBy(1)
+    // Make enemies spawn more frequently, too.
+    state.delayRangeForNextEnemySpawn[0] -= 50
+    state.delayRangeForNextEnemySpawn[1] -= 50
   })
 }
 
@@ -250,7 +255,6 @@ const makeAreaSmallerBy = (by) => {
 }
 
 const gameOver = () => {
-  // @todo
   logAndExit(`GAME OVER! You got ${getPlayer().points} points.`)
 }
 
@@ -287,7 +291,7 @@ const spawnEnemies = () => {
       },
     }
   )
-  setTimeout(spawnEnemies, _.random(1000, 10000))
+  setTimeout(spawnEnemies, _.random(state.delayRangeForNextEnemySpawn[0], state.delayRangeForNextEnemySpawn[1]))
 }
 
 const updateState = () => {
