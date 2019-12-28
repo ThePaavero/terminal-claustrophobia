@@ -64,7 +64,7 @@ process.stdin.on('keypress', (ch, key) => {
       shoot('right')
       break
   }
-  keepPlayerWithinArea()
+  keepActorWithinArea(player)
 })
 
 if (process.stdin.setRawMode) {
@@ -96,18 +96,17 @@ const getPlayer = () => {
   return state.actors.find(a => a.id === 'Player')
 }
 
-const keepPlayerWithinArea = () => {
-  const player = getPlayer()
+const keepActorWithinArea = (actor) => {
   const offset = 2
-  if (player.position.row < offset - 1) {
-    player.position.row = offset - 1
-  } else if (player.position.row > state.rows) {
-    player.position.row = state.rows - offset
+  if (actor.position.row < offset - 1) {
+    actor.position.row = offset - 1
+  } else if (actor.position.row > state.rows) {
+    actor.position.row = state.rows - offset
   }
-  if (player.position.column < offset) {
-    player.position.column = offset
-  } else if (player.position.column > state.columns) {
-    player.position.column = state.columns
+  if (actor.position.column < offset) {
+    actor.position.column = offset
+  } else if (actor.position.column > state.columns) {
+    actor.position.column = state.columns
   }
 }
 
@@ -195,7 +194,7 @@ const spawnEnemies = () => {
 }
 
 const updateState = () => {
-  keepPlayerWithinArea()
+  keepActorWithinArea(getPlayer())
   updateEnemies()
   updateBullets()
 }
