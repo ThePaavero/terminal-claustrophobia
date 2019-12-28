@@ -1,6 +1,6 @@
 # Experimental shooting game for the terminal built with JS.
 
-
+![Screenshot](https://github.com/ThePaavero/terminal-claustrophobia/blob/master/screenshot.png)
 
 [Video](https://www.youtube.com/watch?v=_NAReVkPbsI)
 
