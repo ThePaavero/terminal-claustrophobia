@@ -1,6 +1,7 @@
 const clear = require('clear')
 const fs = require('fs')
 keypress = require('keypress')
+require ('colors')
 
 const state = {
   columns: 80,
@@ -8,7 +9,7 @@ const state = {
   actors: [
     {
       id: 'Player',
-      character: '★',
+      character: ' '.bgRed.black,
       position: {
         row: 10,
         column: 10,
@@ -67,13 +68,13 @@ const getPlayer = () => {
 
 const keepPlayerWithinArea = () => {
   const player = getPlayer()
-  if (player.position.row < 0) {
-    player.position.row = 0
+  if (player.position.row < 1) {
+    player.position.row = 1
   } else if (player.position.row > state.rows) {
-    player.position.row = state.rows
+    player.position.row = state.rows - 1
   }
-  if (player.position.column < 0) {
-    player.position.column = 0
+  if (player.position.column < 1) {
+    player.position.column = 1
   } else if (player.position.column > state.columns) {
     player.position.column = state.columns
   }
@@ -106,9 +107,14 @@ const render = () => {
   console.log(output)
 }
 
+const updateState = () => {
+  keepPlayerWithinArea()
+}
+
 const step = () => {
+  updateState()
   render()
-  setTimeout(step, 20)
+  setTimeout(step, 0)
 }
 
 clearTerminal()
