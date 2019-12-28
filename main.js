@@ -180,6 +180,7 @@ const updateBullets = () => {
 }
 
 const bulletOverlapsEnemyOrPlayer = (bullet) => {
+  let result = false
   state.actors.forEach(actor => {
     const actorType = actor.id
     if (actorType === 'Player' || actorType === 'Bullet') {
@@ -187,13 +188,14 @@ const bulletOverlapsEnemyOrPlayer = (bullet) => {
     }
     if (bullet.position.row === actor.position.row && bullet.position.column === actor.position.column) {
       // Ouch!
-      return {
+      result = {
         bullet,
         actor,
       }
     }
   })
-  return false
+
+  return result
 }
 
 const checkForBulletHits = () => {
