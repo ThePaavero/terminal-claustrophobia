@@ -194,7 +194,6 @@ const bulletOverlapsEnemyOrPlayer = (bullet) => {
       }
     }
   })
-
   return result
 }
 
@@ -205,9 +204,10 @@ const checkForBulletHits = () => {
     if (!hitResult) {
       return
     }
-    // HIT!
-    logAndExit(hitResult)
-    // @todo Kill the enemy.
+    // Kill the enemy.
+    const enemyToKill = hitResult.actor
+    logAndExit(enemyToKill)
+    // @todo Remove from actor array.
   })
 }
 
