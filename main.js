@@ -1,5 +1,6 @@
-const readline = require('readline')
-// require('colors')
+const clear = require('clear')
+const fs = require('fs')
+keypress = require('keypress')
 
 const state = {
   columns: 80,
@@ -16,11 +17,66 @@ const state = {
   ]
 }
 
+keypress(process.stdin)
+
+let output = ''
+
+const logAndExit = (object) => {
+  console.log(object)
+  process.exit(22)
+}
+
+process.stdin.on('keypress', (ch, key) => {
+
+  if (key && key.ctrl && key.name === 'c') {
+    process.stdin.pause()
+    logAndExit('Thanks for playing!')
+  }
+
+  const player = getPlayer()
+  switch (key.name) {
+    case 'w':
+      player.position.row--
+      break
+    case 's':
+      player.position.row++
+      break
+    case 'a':
+      player.position.column--
+      break
+    case 'd':
+      player.position.column++
+      break
+  }
+  keepPlayerWithinArea()
+})
+
+if (process.stdin.setRawMode) {
+  process.stdin.setRawMode(true)
+}
+process.stdin.resume()
+
 const clearTerminal = () => {
-  const blank = '\n'.repeat(process.stdout.rows)
-  console.log(blank)
-  readline.cursorTo(process.stdout, 0, 0)
-  readline.clearScreenDown(process.stdout)
+  output = ''
+  clear()
+}
+
+const getPlayer = () => {
+  return state.actors.find(a => a.id === 'Player')
+}
+
+const keepPlayerWithinArea = () => {
+  const player = getPlayer()
+  if (player.position.row < 0) {
+    player.position.row = 0
+  } else if (player.position.row > state.rows) {
+    player.position.row = state.rows
+  }
+  if (player.position.column < 0) {
+    player.position.column = 0
+  } else if (player.position.column > state.columns) {
+    player.position.column = state.columns
+  }
 }
 
 const getBlockOutput = (row, column) => {
@@ -30,12 +86,11 @@ const getBlockOutput = (row, column) => {
       matchingActor = actor
     }
   })
-  return matchingActor ? matchingActor.character : '.'
+  return matchingActor ? matchingActor.character : ' '
 }
 
 const render = () => {
   clearTerminal()
-  let output = ''
   const blockAmount = state.columns * state.rows
   let rowCounter = 0
   let columnCounter = 0
@@ -56,4 +111,5 @@ const step = () => {
   setTimeout(step, 20)
 }
 
+clearTerminal()
 step()
