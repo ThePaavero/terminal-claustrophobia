@@ -159,7 +159,11 @@ const updateEnemies = () => {
     enemy.position.column += (enemy.position.column > player.position.column ? -1 : 1) + _.random(-1, 1)
   })
   state.enemiesToKill.forEach(enemyToKill => {
-    logAndExit(enemyToKill) // @todo How do I fucking remove the enemy from my actors array? :D
+    state.actors.forEach(actor => {
+      if (actor.position.row === enemyToKill.position.row && actor.position.column === enemyToKill.position.column) {
+        state.actors = state.actors.filter(a => a !== enemyToKill)
+      }
+    })
   })
 }
 
