@@ -55,16 +55,16 @@ process.stdin.on('keypress', (ch, key) => {
 
     // Weapons.
     case 'i':
-      shoot('up')
+      shoot(player, 'up')
       break
     case 'k':
-      shoot('down')
+      shoot(player, 'down')
       break
     case 'j':
-      shoot('left')
+      shoot(player, 'left')
       break
     case 'l':
-      shoot('right')
+      shoot(player, 'right')
       break
   }
   keepActorWithinArea(player)
@@ -80,15 +80,14 @@ const clearTerminal = () => {
   clear()
 }
 
-const shoot = (direction) => {
-  const player = getPlayer()
+const shoot = (shooter, direction) => {
   state.actors.push(
     {
       id: 'Bullet',
       character: '·'.yellow,
       position: {
-        row: player.position.row,
-        column: player.position.column,
+        row: shooter.position.row,
+        column: shooter.position.column,
       },
       direction,
     }
