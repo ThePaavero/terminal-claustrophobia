@@ -36,6 +36,7 @@ process.stdin.on('keypress', (ch, key) => {
 
   const player = getPlayer()
   switch (key.name) {
+    // Movement.
     case 'w':
       player.position.row--
       break
@@ -47,6 +48,20 @@ process.stdin.on('keypress', (ch, key) => {
       break
     case 'd':
       player.position.column++
+      break
+
+    // Weapons.
+    case 'i':
+      shoot('up')
+      break
+    case 'k':
+      shoot('down')
+      break
+    case 'j':
+      shoot('left')
+      break
+    case 'l':
+      shoot('rightup')
       break
   }
   keepPlayerWithinArea()
@@ -60,6 +75,21 @@ process.stdin.resume()
 const clearTerminal = () => {
   output = ''
   clear()
+}
+
+const shoot = (direction) => {
+  const player = getPlayer()
+  state.actors.push(
+    {
+      id: 'Bullet',
+      character: '·',
+      position: {
+        row: player.position.row,
+        column: player.position.column,
+      },
+      direction,
+    }
+  )
 }
 
 const getPlayer = () => {
@@ -130,6 +160,13 @@ const updateEnemies = () => {
   })
 }
 
+const updateBullets = () => {
+  const bullets = state.actors.filter(a => a.id === 'Bullet')
+  bullets.forEach(bullet => {
+    bullet.position.column--
+  })
+}
+
 const spawnEnemies = () => {
   state.actors.push(
     {
@@ -147,6 +184,7 @@ const spawnEnemies = () => {
 const updateState = () => {
   keepPlayerWithinArea()
   updateEnemies()
+  updateBullets()
 }
 
 const step = () => {
