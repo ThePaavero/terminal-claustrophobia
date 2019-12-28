@@ -115,10 +115,10 @@ const getBlockOutput = (row, column) => {
 
   // Should we be a "wall" block?
   if (row === 0 || row === state.rows - 1) {
-    return '-'
+    return '-'.gray
   }
   if (column === 1 || column === state.columns) {
-    return '|'
+    return '|'.gray
   }
 
   let matchingActor = null
