@@ -10,6 +10,7 @@ const state = {
     {
       id: 'Player',
       character: ' '.bgWhite,
+      points: 0,
       health: 5,
       position: {
         row: 10,
@@ -131,11 +132,18 @@ const getBlockOutput = (row, column) => {
   return matchingActor ? matchingActor.character : ' '
 }
 
+const getHeaderContent = () => {
+  return `\nHEALTH: ${getPlayer().health}\tPOINTS: ${getPlayer().points}\n`
+}
+
 const render = () => {
   clearTerminal()
   const blockAmount = state.columns * state.rows
   let rowCounter = 0
   let columnCounter = 0
+
+  output += getHeaderContent()
+
   for (let index = 0; index < blockAmount; index++) {
     columnCounter++
     output += getBlockOutput(rowCounter, columnCounter)
@@ -216,6 +224,8 @@ const checkForBulletHits = () => {
     // Kill the enemy.
     const enemyToKill = hitResult.actor
     state.enemiesToKill.push(enemyToKill)
+    // Reward player.
+    addToPoints(1)
   })
 }
 
@@ -230,6 +240,10 @@ const updateHealthWith = (add) => {
   if (player.health < 1) {
     gameOver()
   }
+}
+
+const addToPoints = (add) => {
+  getPlayer().points += add
 }
 
 const checkForEnemyHit = () => {
