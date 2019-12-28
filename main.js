@@ -85,7 +85,7 @@ const shoot = (direction) => {
   state.actors.push(
     {
       id: 'Bullet',
-      character: '·',
+      character: '·'.yellow,
       position: {
         row: player.position.row,
         column: player.position.column,
@@ -133,7 +133,7 @@ const getBlockOutput = (row, column) => {
 }
 
 const getHeaderContent = () => {
-  return `\nHEALTH: ${getPlayer().health}\tPOINTS: ${getPlayer().points}\n`
+  return `\n HEALTH: ${getPlayer().health}\tPOINTS: ${getPlayer().points}\n`
 }
 
 const render = () => {
@@ -262,7 +262,7 @@ const spawnEnemies = () => {
       id: 'Enemy',
       character: ' '.bgRed,
       position: {
-        row: state.rows,
+        row: _.random(0, 1) === 0 ? state.rows : 0,
         column: _.random(0, state.columns),
       },
     }
