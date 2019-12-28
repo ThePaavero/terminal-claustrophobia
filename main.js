@@ -15,7 +15,8 @@ const state = {
         column: 10,
       },
     }
-  ]
+  ],
+  enemiesToKill: [],
 }
 
 keypress(process.stdin)
@@ -157,6 +158,9 @@ const updateEnemies = () => {
     enemy.position.row += (enemy.position.row > player.position.row ? -1 : 1) + _.random(-1, 1)
     enemy.position.column += (enemy.position.column > player.position.column ? -1 : 1) + _.random(-1, 1)
   })
+  state.enemiesToKill.forEach(enemyToKill => {
+    logAndExit(enemyToKill) // @todo How do I fucking remove the enemy from my actors array? :D
+  })
 }
 
 const updateBullets = () => {
@@ -206,8 +210,7 @@ const checkForBulletHits = () => {
     }
     // Kill the enemy.
     const enemyToKill = hitResult.actor
-    logAndExit(enemyToKill)
-    // @todo Remove from actor array.
+    state.enemiesToKill.push(enemyToKill)
   })
 }
 
