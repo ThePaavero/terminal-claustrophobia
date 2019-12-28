@@ -179,6 +179,30 @@ const updateBullets = () => {
   })
 }
 
+const bulletOverlapsEnemyOrPlayer = (bullet) => {
+  state.actors.forEach(actor => {
+    const actorType = actor.id
+    if (actorType === 'Player' || actorType === 'Bullet') {
+      return
+    }
+    if (bullet.position.row === actor.position.row && bullet.position.column === actor.position.column) {
+      // Ouch!
+      logAndExit(actorType)
+    }
+  })
+}
+
+const checkForBulletHits = () => {
+  const bullets = state.actors.filter(a => a.id === 'Bullet')
+  bullets.forEach(bullet => {
+    const hitResult = bulletOverlapsEnemyOrPlayer(bullet)
+    if (!hitResult) {
+      return
+    }
+    // @todo Handle hit result.
+  })
+}
+
 const spawnEnemies = () => {
   state.actors.push(
     {
@@ -197,6 +221,7 @@ const updateState = () => {
   keepActorWithinArea(getPlayer())
   updateEnemies()
   updateBullets()
+  checkForBulletHits()
 }
 
 const step = () => {
