@@ -3,9 +3,12 @@ const _ = require('lodash')
 keypress = require('keypress')
 require('colors')
 
+const rowAmount = 40
+const columnAmount = 80
+
 const state = {
-  columns: 80,
-  rows: 40,
+  columns: columnAmount,
+  rows: rowAmount,
   actors: [
     {
       id: 'Player',
@@ -13,8 +16,8 @@ const state = {
       points: 0,
       health: 5,
       position: {
-        row: 10,
-        column: 10,
+        row: rowAmount / 2,
+        column: columnAmount / 2,
       },
     }
   ],
@@ -237,7 +240,13 @@ const checkForBulletHits = () => {
     state.enemiesToKill.push(enemyToKill)
     // Reward player.
     addToPoints(1)
+    makeAreaSmallerBy(1)
   })
+}
+
+const makeAreaSmallerBy = (by) => {
+  state.rows -= by
+  state.columns -= by
 }
 
 const gameOver = () => {
