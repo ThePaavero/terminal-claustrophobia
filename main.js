@@ -251,7 +251,7 @@ const makeAreaSmallerBy = (by) => {
 
 const gameOver = () => {
   // @todo
-  logAndExit('GAME OVER')
+  logAndExit(`GAME OVER! You got ${getPlayer().points} points.`)
 }
 
 const updateHealthWith = (add) => {
